@@ -70,8 +70,8 @@ const VerifyEmail = () => {
     }
 
     return (
-        <div>
-            <div>
+        <div className="color-overlay d-flex justify-content-center align-items-center">
+            <Form className="rounded p-4 p-sm-3">
                 <Form.Group className="mb-3">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
@@ -85,8 +85,7 @@ const VerifyEmail = () => {
                         {errors.email}
                     </Form.Control.Feedback>}
                 </Form.Group>
-            </div>
-            <div>
+    
                 <Form.Group className="mb-3">
                     <Form.Label>Code</Form.Label>
                     <Form.Control
@@ -100,10 +99,8 @@ const VerifyEmail = () => {
                         {errors.code}
                     </Form.Control.Feedback>}
                 </Form.Group>
-            </div>
-            <div>
                 <Button onClick={_verify}>Verify Email</Button>
-            </div>
+            </Form>
         </div>
     )
 }

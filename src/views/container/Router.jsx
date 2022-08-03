@@ -9,8 +9,10 @@ import VerifyEmail from "../pages/VerifyEmail";
 
 const Router = () => {
   return (
+    
     <BrowserRouter>
       <Routes>
+        
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
