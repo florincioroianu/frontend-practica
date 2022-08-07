@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import classes from "./Login.module.scss";
 import { useNavigate } from "react-router-dom";
+import FetchApi from "../../../libs/FetchApi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,16 +38,16 @@ const Login = () => {
       isValid = false;
     }
 
-    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-      isValid = false;
-      tmpErrors.email = "Email Not Valid";
-    }
+    // if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+    //   isValid = false;
+    //   tmpErrors.email = "Email Not Valid";
+    // }
 
-    if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,20}$/)) {
-      isValid = false;
-      tmpErrors.password =
-        "At least one digit, one uppercase and one lowercase, length must be between 5 and 20 characters";
-    }
+    // if (!password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,20}$/)) {
+    //   isValid = false;
+    //   tmpErrors.password =
+    //     "At least one digit, one uppercase and one lowercase, length must be between 5 and 20 characters";
+    // }
 
     setErrors(tmpErrors);
 
@@ -67,6 +68,11 @@ const Login = () => {
         password,
       };
 
+      const res = await FetchApi.create('/login', payload);
+      if(!res.isError) {
+        window.sessionStorage.setItem('token', res.data.token);
+      }
+      console.log(323, res);
       // const res = await fetch('http://practica.local/api/login', {
       //   method: 'POST',
       //   headers: {
@@ -79,6 +85,11 @@ const Login = () => {
       // console.log(res);
     }
   };
+
+  const _getCategories = async () => {
+    const user = await FetchApi.get('/categories');
+    console.log(332, user);
+  }
 
   return (
     <section>
@@ -119,6 +130,9 @@ const Login = () => {
 
           <Button variant="primary" onClick={_login}>
             Login
+          </Button>
+          <Button variant="primary" onClick={_getCategories}>
+            get categories
           </Button>
           <a className="link-danger mb-3" onClick={_forgotPassword}>
             Forgot password
