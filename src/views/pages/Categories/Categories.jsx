@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, Spinner, Table } from 'react-bootstrap';
-import Select from 'react-select';
+import { Button, Spinner, Table, DropdownButton, Dropdown } from 'react-bootstrap';
 
 import FetchApi from '../../../libs/FetchApi';
 
@@ -10,14 +9,13 @@ const Categories = () => {
 	const [loading, setLoading] = useState(false);
 	const [pagination, setPagination] = useState({
 		currentPage: 1,
-		perPage: [25, 50, 75],
+		perPage: 25,
 	});
 
 	useEffect(() => {
 		const getCategories = async () => {
 			setLoading(true);
-			const res = await FetchApi.get('/categories', { page: pagination.currentPage });
-
+			const res = await FetchApi.get('/categories', { page: pagination.currentPage, perPage: pagination.perPage });
 			if (!res.isError) {
 				const { data: tmpCategories, ...tmpPagination } = res.data;
 				setCategories(tmpCategories);
@@ -26,7 +24,7 @@ const Categories = () => {
 			setLoading(false);
 		};
 		getCategories();
-	}, [pagination.currentPage, pagination.perPage]);
+	}, [pagination.perPage, pagination.currentPage]);
 
 	const goToPreviousPage = () => {
 		setPagination((prev) => ({ ...prev, currentPage: prev.currentPage - 1 }));
@@ -44,6 +42,10 @@ const Categories = () => {
 		);
 	}
 
+	const handleSelect = (e) => {
+		setPagination((prev) => ({ ...prev, perPage: e }));
+	};
+
 	return (
 		<div>
 			<div>
@@ -51,6 +53,14 @@ const Categories = () => {
 					{pagination.currentPage > 1 && <Button onClick={goToPreviousPage}>Prev</Button>}
 					<div>{pagination.currentPage}</div>
 					<Button onClick={goToNextPage}>Next</Button>
+				</div>
+
+				<div>
+					<DropdownButton alignRight title={pagination.perPage} onSelect={handleSelect}>
+						<Dropdown.Item eventKey='25'>25</Dropdown.Item>
+						<Dropdown.Item eventKey='50'>50</Dropdown.Item>
+						<Dropdown.Item eventKey='75'>75</Dropdown.Item>
+					</DropdownButton>
 				</div>
 			</div>
 			<Table striped bordered hover>
