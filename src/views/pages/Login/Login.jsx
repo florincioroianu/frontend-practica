@@ -79,6 +79,10 @@ const Login = () => {
 		}
 	};
 
+	const _forgotPassword = () => {
+		navigate('/forgot-password');
+	};
+
 	return (
 		<section>
 			<div className={classes.loginContainer}>
@@ -111,6 +115,7 @@ const Login = () => {
 					</Form.Group>
 				</div>
 				<Button onClick={_login}>Login</Button>
+				<a onClick={_forgotPassword}>Forgot password</a>
 			</div>
 		</section>
 	);

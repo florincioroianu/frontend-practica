@@ -10,6 +10,9 @@ import NotFound from '../pages/NotFound';
 import Profile from '../pages/Profile';
 import Register from '../pages/Register';
 import VerifyEmail from '../pages/VerifyEmail';
+import ForgotPassword from '../pages/ForgotPassword';
+import ChangePassword from '../pages/ChangePassword/ChangePassword';
+import Products from '../pages/Products';
 
 const Router = () => {
 	return (
@@ -18,12 +21,15 @@ const Router = () => {
 				<Route path='/' element={<Home />} />
 				<Route path='/login' element={<Login />} />
 				<Route path='/register' element={<Register />} />
+				<Route path='forgot-password' element={<ForgotPassword />} />
+				<Route path='change-password' element={<ChangePassword />} />
 				<Route path='verify-email' element={<VerifyEmail />} />
 				<Route path='/dashboard' element={<DashboardLayout />}>
 					<Route index element={<Dashboard />} />
 					<Route path='profile' element={<Profile />} />
 					<Route path='categories' element={<Categories />} />
 					<Route path='category/:id' element={<Category />} />
+					<Route path='products' element={<Products />} />
 				</Route>
 				<Route path='*' element={<NotFound />} />
 			</Routes>

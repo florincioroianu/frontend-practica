@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Spinner, Table } from 'react-bootstrap';
+import classes from './Products.module.scss';
 import Select from 'react-select';
 
 import FetchApi from '../../../libs/FetchApi';
 
-const Categories = () => {
-	const [categories, setCategories] = useState([]);
+const Products = () => {
+	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [pagination, setPagination] = useState({
 		currentPage: 1,
-		perPage: [25, 50, 75],
+		perPage: 20,
 	});
 
 	useEffect(() => {
-		const getCategories = async () => {
+		const getProducts = async () => {
 			setLoading(true);
-			const res = await FetchApi.get('/categories', { page: pagination.currentPage });
+			const res = await FetchApi.get('/products', { page: pagination.currentPage });
 
 			if (!res.isError) {
-				const { data: tmpCategories, ...tmpPagination } = res.data;
-				setCategories(tmpCategories);
+				const { data: tmpProducts, ...tmpPagination } = res.data;
+				setProducts(tmpProducts);
 				setPagination(tmpPagination);
 			}
 			setLoading(false);
 		};
-		getCategories();
+		getProducts();
 	}, [pagination.currentPage, pagination.perPage]);
 
 	const goToPreviousPage = () => {
@@ -57,19 +58,23 @@ const Categories = () => {
 				<thead>
 					<tr>
 						<th>#</th>
+						<th>Image</th>
 						<th>Name</th>
-						<th>Parrent Id</th>
+						<th>Description</th>
+						<th>Price</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					{categories?.map((category) => (
-						<tr key={category.id}>
-							<td>{category.id}</td>
-							<td>{category.name}</td>
-							<td>{category.parent_id || '-'}</td>
+					{products?.map((product) => (
+						<tr key={product.id}>
+							<td>{product.id}</td>
+							<td>{product.image || <img src='/logo.jpg' alt='image' className={classes.img} />}</td>
+							<td>{product.name}</td>
+							<td>{product.description}</td>
+							<td>{product.price}</td>
 							<td>
-								<Link to={`/dashboard/category/${category.id}`}>
+								<Link to={`/dashboard/product/${product.id}`}>
 									{' '}
 									<Button>View</Button>
 								</Link>
@@ -82,4 +87,4 @@ const Categories = () => {
 	);
 };
 
-export default Categories;
+export default Products;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import FetchApi from '../../../libs/FetchApi';
 
 const ForgotPassword = () => {
 	const navigate = useNavigate();
@@ -44,17 +45,12 @@ const ForgotPassword = () => {
 				email,
 			};
 
-			// const res = await fetch('http://practica.local/api/forgot-password', {
-			//   method: 'POST',
-			//   headers: {
-			//     "Accept": 'application/json',
-			//     "Content-Type": 'application/json'
-			//   },
-			//   body: JSON.stringify(payload)
-			// })
+			const res = await FetchApi.create('/forgot-password', payload);
 
-			// console.log(res);
-			navigate('/change-password');
+			if (!res.isError) {
+				console.log(res.data);
+				navigate('/change-password');
+			}
 		}
 	};
 	return (
